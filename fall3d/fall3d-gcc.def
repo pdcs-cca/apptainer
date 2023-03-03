@@ -1,0 +1,21 @@
+bootstrap: docker
+from: debian:11
+
+%post
+	apt -y update
+	apt -y upgrade
+	apt -y install libbrotli1 binutils curl openmpi-bin libgfortran5
+
+	cd / 
+	curl -L https://github.com/pdcs-cca/apptainer/raw/main/fall3d/opt-gcc.tgz | tar xzvf - 
+
+%environment
+	export PATH=/opt/software/apps/bin:$PATH 
+
+%runscript
+	echo "FALL3D($#,\"$@\")"
+	env 
+	exec Fall3d.r8.x
+
+
+	

@@ -1,0 +1,22 @@
+bootstrap: docker
+from: debian:11
+
+%post
+	apt -y update
+	apt -y upgrade
+	apt -y install libbrotli1 binutils curl
+
+	cd / 
+	curl -L https://github.com/pdcs-cca/apptainer/raw/main/fall3d/opt.tgz | tar xzvf - 
+
+%environment
+	export LD_LIBRARY_PATH=/opt/software/apps/intel/oneapi/compiler/2022.0.2/linux/compiler/lib/intel64_lin
+	export PATH=/opt/software/apps/bin:$PATH 
+
+%runscript
+	echo "FALL3D($#,\"$@\")"
+	env 
+	exec Fall3d.r8.x
+
+
+	

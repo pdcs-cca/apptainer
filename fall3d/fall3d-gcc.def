@@ -15,7 +15,7 @@ from: debian:11
 %runscript
 	echo "FALL3D($#,\"$@\")"
 	env 
-	exec Fall3d.r8.x
+	exec Fall3d.r8.x $@
 
 
 	

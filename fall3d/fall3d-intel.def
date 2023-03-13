@@ -5,6 +5,8 @@ from: debian:11
 	apt -y update
 	apt -y upgrade
 	apt -y install libbrotli1 binutils curl
+	apt clean 
+        rm -rf /var/lib/apt/lists/*
 
 	cd / 
 	curl -L https://github.com/pdcs-cca/apptainer/raw/main/fall3d/opt.tgz | tar xzvf - 

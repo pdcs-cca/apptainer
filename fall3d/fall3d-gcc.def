@@ -5,7 +5,9 @@ from: debian:11
 	apt -y update
 	apt -y upgrade
 	apt -y install libbrotli1 binutils curl openmpi-bin libgfortran5
-
+	apt clean 
+        rm -rf /var/lib/apt/lists/*
+	
 	cd / 
 	curl -L https://github.com/pdcs-cca/apptainer/raw/main/fall3d/opt-gcc.tgz | tar xzvf - 
 

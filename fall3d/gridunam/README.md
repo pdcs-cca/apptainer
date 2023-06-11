@@ -1,1 +1,32 @@
 Contenedor falled para protitipo grid unam
+
+bootstrap: docker
+from: debian:11
+
+%files
+    f3d-mpi-libs.tar.gz /
+    Fall3d.r8.x /
+    /opt/software/apps/intel/oneapi/mpi/2021.5.1/bin/mpiexec.hydra /
+    /opt/software/apps/intel/oneapi/mpi/2021.5.1/bin/hydra_bstrap_proxy /
+    /opt/software/apps/intel/oneapi/mpi/2021.5.1/bin/hydra_nameserver /
+    /opt/software/apps/intel/oneapi/mpi/2021.5.1/bin/hydra_pmi_proxy /
+    /etc/libibverbs.d
+
+%post
+	apt -y update
+	apt -y upgrade
+	apt -y install libbrotli1 binutils curl
+    apt clean
+    rm -rf /var/lib/apt/lists/*
+    tar xzvf /f3d-mpi-libs.tar.gz -C /
+    rm /f3d-mpi-libs.tar.gz
+
+%environment
+	export LD_LIBRARY_PATH=/opt/software/apps/intel/oneapi/compiler/2022.0.2/linux/compiler/lib/intel64_lin:/opt/software/apps/netcdf/intel/2021u5/4.8.1/lib:/opt/software/apps/intel/oneapi/mpi/2021.5.1/lib/release:/opt/software/apps/intel/oneapi/mpi/2021.5.1/lib:/opt/software/apps/intel/oneapi/mpi/2021.5.1/libfabric/lib
+	export PATH=/:/opt/software/apps/bin:$PATH 
+    export FI_PROVIDER_PATH=/opt/software/apps/intel/oneapi/mpi/2021.5.1/libfabric/lib/prov
+
+%runscript
+	echo "FALL3D($#,\"$@\")"
+	exec /mpiexec.hydra -n 4 /Fall3d.r8.x $*
+
